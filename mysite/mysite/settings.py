@@ -76,9 +76,10 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.path.join(BASE_DIR, 'database'),
+        'NAME': 'polls',
         'USER': 'postgres',
         'PASSWORD': 'qwe123',
+        'PORT': '5454',
     }
 }
 
