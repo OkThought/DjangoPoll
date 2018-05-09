@@ -1,8 +1,12 @@
 from django.http import HttpResponse
 
+from .models import Question
+
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    last5questions = Question.objects.order_by('-pub_date')[:5]
+    payload = ', '.join([q.question_text for q in last5questions])
+    return HttpResponse('Recent questions: %s' % payload)
 
 
 def detail(request, question_id):
