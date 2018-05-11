@@ -72,6 +72,29 @@ class IndexViewTests(TestCase):
         )
 
 
+class QuestionDetailTests(TestCase):
+
+    def test_future_question(self):
+        """
+        An attempt to get a detail view of a question with future publication
+        date results in '404 Page Not Found'
+        """
+        future_question = create_question(text='future question', days=+30)
+        response = self.client.get(reverse('polls:detail',
+                                           args=(future_question.id,)))
+        self.assertEqual(response.status_code, 404)  # Page Not Found
+
+    def test_past_question(self):
+        """
+        Detail view of a question with past publication date displays the
+        question's text
+        """
+        question = create_question(text='past question', days=-30)
+        response = self.client.get(reverse('polls:detail', args=(question.id,)))
+        self.assertEqual(response.status_code, 200)  # OK
+        self.assertContains(response, question.question_text)
+
+
 class QuestionModelTests(TestCase):
 
     def test_was_published_recently_with_future_question(self):
